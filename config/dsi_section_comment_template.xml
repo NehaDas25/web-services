@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<harnessmainnodecomponents>
+    <section name="Connectors" componenttypecode="CONNECTOR"/>
+    <section name="Splices" componenttypecode="SPLICE"/>
+    <section name="Terminals" componenttypecode="TERM"/>
+    <section name="Plugs" componenttypecode="PLUG"/>
+    <section name="Clips" componenttypecode="CLIP"/>
+    <section name="Grommets" componenttypecode="GROMMET"/>
+    <section name="Other Components" componenttypecode=""/>
+</harnessmainnodecomponents>

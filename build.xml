@@ -1,0 +1,79 @@
+<project name="NotifyService" default="build" basedir=".">
+    <!-- Set properties for directories -->
+    <property name="src.dir" location="src"/>
+    <property name="build.dir" location="build"/>
+    <property name="output.dir" location="ServerWebApp"/>
+    <property name="webinf.dir" location="${output.dir}/WEB-INF"/>
+    <property name="classes.dir" location="${webinf.dir}/classes"/>
+    <property name="lib.dir" location="${webinf.dir}/lib"/>
+    <property name="config.dir" location="config"/>
+    <property name="script.dir" location="scripts"/>
+    <property name="tiff.lib.dir" location="Tiff/lib"/>
+    <property name="properties.dir" location="${webinf.dir}/config"/>
+    <property name="scripts.dir" location="${webinf.dir}/scripts"/>
+
+    <!-- Clean target to remove old build artifacts -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${output.dir}"/>
+    </target>
+
+    <!-- Initialize directories -->
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${lib.dir}"/>
+        <mkdir dir="${properties.dir}"/>
+        <mkdir dir="${scripts.dir}"/>
+    </target>
+
+    <!-- Compile Java sources -->
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false" debug="true">
+            <classpath>
+                <!-- Add all jars from lib directory -->
+                <fileset dir="lib" includes="**/*.jar"/>
+                <!-- Add Tiff libraries -->
+                <fileset dir="${tiff.lib.dir}" includes="**/*.jar"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <!-- Copy configuration files -->
+    <target name="copy-config" depends="compile">
+        <copy todir="${properties.dir}">
+            <fileset dir="${config.dir}">
+                <include name="*.properties"/>
+                <include name="*.xml"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- Copy script - bat files -->
+    <target name="copy-scripts" depends="compile">
+        <copy todir="${scripts.dir}">
+            <fileset dir="${script.dir}">
+                <include name="*.bat"/>
+            </fileset>
+        </copy>
+        <copy file="webserver.bat" todir="${webinf.dir}"/>
+    </target>
+
+    <!-- Copy libraries -->
+    <target name="copy-libraries" depends="copy-config">
+        <copy todir="${lib.dir}">
+            <fileset dir="lib" includes="**/*.jar"/>
+            <fileset dir="${tiff.lib.dir}" includes="**/*.jar"/>
+        </copy>
+    </target>
+
+    <!-- Copy web.xml -->
+    <target name="copy-webxml" depends="copy-libraries">
+        <copy file="${src.dir}/WEB-INF/web.xml" todir="${webinf.dir}"/>
+    </target>
+
+    <!-- Main build target -->
+    <target name="build" depends="clean, compile, copy-config, copy-scripts, copy-libraries, copy-webxml">
+        <echo message="Build completed successfully"/>
+    </target>
+</project>

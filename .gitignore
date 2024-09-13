@@ -1,0 +1,5 @@
+# Ignore IntelliJ IDEA and other JetBrains IDE settings
+.idea/
+
+# Ignore ServerWebApp folder
+ServerWebApp/
